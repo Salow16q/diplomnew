@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Результат распознавания</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+
+        .container {
+            width: 80%;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        h2 {
+            color: #333;
+        }
+
+        .image-container {
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .result-list {
+            margin: 20px 0;
+            padding: 0;
+            list-style-type: none;
+        }
+
+        .result-list li {
+            background-color: #fff;
+            padding: 10px;
+            margin: 5px 0;
+            border-radius: 5px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .result-list li span {
+            font-weight: bold;
+        }
+
+        /* Класс для полупрозрачных элементов */
+        .transparent {
+            opacity: 0.5;
+            color: gray;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>Результат распознавания номера</h1>
+
+        <!-- Загруженное изображение -->
+        <div class="image-container">
+            <h2>Загруженное изображение:</h2>
+            <img src="data:image/jpeg;base64,{{ image }}" alt="Uploaded Image" style="max-width: 100%; height: auto;">
+        </div>
+
+        <!-- Распознанный номер -->
+        <h2>Распознанный номер:</h2>
+        <p>
+
+                <span><p>{{ recognized_text }}</p></span>
+
+        </p>
+
+        <!-- Список распознанных данных с вероятностями -->
+        <h2>Распознанные данные:</h2>
+        <ul class="result-list">
+            {% for result in results %}
+                <li class="{% if result.probability < 0.2 %}transparent{% endif %}">
+                    <span>{{ result.text }}</span> (Вероятность: {{ result.probability|floatformat:2 }})
+                </li>
+            {% endfor %}
+        </ul>
+
+        <!-- Кнопка возврата на страницу загрузки -->
+        <div class="image-container">
+            <a href="{% url 'upload_image' %}" style="text-decoration: none; padding: 10px 20px; background-color: #4CAF50; color: white; border-radius: 5px;">Загрузить другое изображение</a>
+        </div>
+    </div>
+
+</body>
+</html>
